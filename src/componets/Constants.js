@@ -1,3 +1,5 @@
+export const elementTypes = ["div", "input", "img"];
+
 export const alignItems = ["normal",
 "stretch",
 "center",
@@ -31,5 +33,24 @@ export const textAlign = ["left",
 "right",
 "center",
 "justify",
+"initial",
+"inherit",];
+
+export const fontFamily = ["Serif",
+"Sans-serif",
+"Monospace",
+"Cursive",
+"Fantasy",];
+
+export const borderStyle =["none",
+"hidden",
+"dotted",
+"dashed",
+"solid",
+"double",
+"groove",
+"ridge",
+"inset",
+"outset",
 "initial",
 "inherit",];

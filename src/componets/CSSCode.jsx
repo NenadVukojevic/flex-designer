@@ -58,7 +58,7 @@ const CSSCode = ({ source }) => {
                 >{camelCase ? 'camel' : 'snake'}</div>
                 <div className='codeHeaderButton' onClick={copyContent}>{copied ? 'copied' : 'copy'}</div>
             </div>
-            <div id="css">{code}</div>
+            <pre id="css">{code}</pre>
         </div>
     )
 }

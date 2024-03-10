@@ -22,12 +22,20 @@ import PaddingRight from '../Images/paddingRight.png';
 import AlignItems from '../Images/AlignItems.png';
 import JustifyContent from '../Images/JustifyContent.png';
 import TextAlign from '../Images/TextAlign.png';
+import Border from '../Images/border.png';
+import BorderColor from '../Images/borderColor.png';
+import BorderStyle from '../Images/borderStyle.png';
+import BorderWidth from '../Images/borderWidth.png';
 
-import { alignItems, justifyContent, textAlign } from './Constants';
+import { alignItems, justifyContent, textAlign, fontFamily, borderStyle } from './Constants';
+
+
 import ControlGroupDropDown from './ControlGroupDropDown';
+import { PageState } from '../utils/PageStates';
 
 const EditFlexElement = ({ element, updateEelement }) => {
 
+  const [state, setState] = useState(PageState.SHOW_DIMENSIONS);
 
   const [highLighted, setHighLighted] = useState(0);
 
@@ -35,6 +43,7 @@ const EditFlexElement = ({ element, updateEelement }) => {
   const [paddingGroup, setPaddingGroup] = useState(true);
   const [showBGColor, setshowBGColor] = useState(false);
   const [showColor, setshowColor] = useState(false);
+  const [borderGroup, setBorderGroup] = useState(true);
 
   function handleChange(e) {
     console.log("handleChange", element.id, e.target.id, e.target.value);
@@ -154,206 +163,394 @@ const EditFlexElement = ({ element, updateEelement }) => {
         }
       </div>
 
-      <div>
-        <ControlGroup
-          name="width"
-          value={element.style.width}
-          image={Width}
-          update={(newValue) => handleStyleChange('width', newValue)}
-          minValue={10} />
-      </div>
+      {
+        state === PageState.SHOW_DIMENSIONS && (
+          <div className='section-group'>
+            <div className='section-group-title'
+              onDoubleClick={() => setState(PageState.INIT)}
+            >
+              dimensions
+            </div>
+            <div>
+              <ControlGroup
+                name="width"
+                value={element.style.width}
+                image={Width}
+                update={(newValue) => handleStyleChange('width', newValue)}
+                minValue={10} />
+            </div>
 
-      <div>
-        <ControlGroup
-          name="height"
-          value={element.style.height}
-          image={Height}
-          update={(newValue) => handleStyleChange('height', newValue)}
-          minValue={10} />
-      </div>
+            <div>
+              <ControlGroup
+                name="height"
+                value={element.style.height}
+                image={Height}
+                update={(newValue) => handleStyleChange('height', newValue)}
+                minValue={10} />
+            </div>
+          </div>
+        )
 
-      <div>
-        <ControlGroup
-          name="gap"
-          value={element.style.gap}
-          image={Gap}
-          update={(newValue) => handleStyleChange('gap', newValue)}
-          minValue={0} />
-      </div>
-
-
-      {marginGroup && (
-        <div>
-          <ControlGroup
-            name="margin"
-            value={element.style.margin}
-            image={MarginAll}
-            update={(newValue) => handleStyleChange('margin', newValue)}
-            minValue={0}
-            onIconClick={onMarginGroupClick}
-          />
-        </div>
-
-      )}
+      }
 
       {
-        !marginGroup && (
-          <div className='directionGroup'>
-            <ControlGroup
-              name="marginTop"
-              value={element.style.marginTop}
-              image={MarginTop}
-              update={(newValue) => handleStyleChange('marginTop', newValue)}
-              minValue={0}
-              onIconClick={onMarginGroupClick}
-            />
-            <ControlGroup
-              name="marginBottom"
-              value={element.style.marginBottom}
-              image={MarginBottom}
-              update={(newValue) => handleStyleChange('marginBottom', newValue)}
-              minValue={0}
-              onIconClick={onMarginGroupClick}
-            />
-            <ControlGroup
-              name="marginLeft"
-              value={element.style.marginLeft}
-              image={MarginLeft}
-              update={(newValue) => handleStyleChange('marginLeft', newValue)}
-              minValue={0}
-              onIconClick={onMarginGroupClick}
-            />
-            <ControlGroup
-              name="marginRight"
-              value={element.style.marginRight}
-              image={MarginRight}
-              update={(newValue) => handleStyleChange('marginRight', newValue)}
-              minValue={0}
-              onIconClick={onMarginGroupClick}
-            />
+        state !== PageState.SHOW_DIMENSIONS && (
+          <div className='section-group'>
+            <div
+              className='section-group-title'
+              onClick={() => setState(PageState.SHOW_DIMENSIONS)}>
+              dimensions
+            </div>
           </div>
         )
       }
 
       {
-        paddingGroup && (
-          <div>
-            <ControlGroup
-              name="padding"
-              value={element.style.padding}
-              image={PaddingAll}
-              update={(newValue) => handleStyleChange('padding', newValue)}
-              minValue={0}
-              onIconClick={onPaddingGroupClick}
-            />
-          </div>
+        state === PageState.SHOW_MARGIN && (
 
+          <div className='section-group'>
+            <div className='section-group-title'>
+              margins
+            </div>
+            <div>
+              <ControlGroup
+                name="gap"
+                value={element.style.gap}
+                image={Gap}
+                update={(newValue) => handleStyleChange('gap', newValue)}
+                minValue={0} />
+            </div>
+
+            {
+              marginGroup && (
+                <div>
+                  <ControlGroup
+                    name="margin"
+                    value={element.style.margin}
+                    image={MarginAll}
+                    update={(newValue) => handleStyleChange('margin', newValue)}
+                    minValue={0}
+                    onIconClick={onMarginGroupClick}
+                  />
+                </div>
+
+              )}
+
+            {
+              !marginGroup && (
+                <div className='directionGroup'>
+                  <ControlGroup
+                    name="marginTop"
+                    value={element.style.marginTop}
+                    image={MarginTop}
+                    update={(newValue) => handleStyleChange('marginTop', newValue)}
+                    minValue={0}
+                    onIconClick={onMarginGroupClick}
+                  />
+                  <ControlGroup
+                    name="marginBottom"
+                    value={element.style.marginBottom}
+                    image={MarginBottom}
+                    update={(newValue) => handleStyleChange('marginBottom', newValue)}
+                    minValue={0}
+                    onIconClick={onMarginGroupClick}
+                  />
+                  <ControlGroup
+                    name="marginLeft"
+                    value={element.style.marginLeft}
+                    image={MarginLeft}
+                    update={(newValue) => handleStyleChange('marginLeft', newValue)}
+                    minValue={0}
+                    onIconClick={onMarginGroupClick}
+                  />
+                  <ControlGroup
+                    name="marginRight"
+                    value={element.style.marginRight}
+                    image={MarginRight}
+                    update={(newValue) => handleStyleChange('marginRight', newValue)}
+                    minValue={0}
+                    onIconClick={onMarginGroupClick}
+                  />
+                </div>
+              )
+            }
+
+            {
+              paddingGroup && (
+                <div>
+                  <ControlGroup
+                    name="padding"
+                    value={element.style.padding}
+                    image={PaddingAll}
+                    update={(newValue) => handleStyleChange('padding', newValue)}
+                    minValue={0}
+                    onIconClick={onPaddingGroupClick}
+                  />
+                </div>
+
+              )
+            }
+            {
+              !paddingGroup && (
+                <div className='directionGroup'>
+                  <ControlGroup
+                    name="paddingTop"
+                    value={element.style.paddingTop}
+                    image={PaddingTop}
+                    update={(newValue) => handleStyleChange('paddingTop', newValue)}
+                    minValue={0}
+                    onIconClick={onPaddingGroupClick}
+                  />
+                  <ControlGroup
+                    name="paddingBottom"
+                    value={element.style.paddingBottom}
+                    image={PaddingBottom}
+                    update={(newValue) => handleStyleChange('paddingBottom', newValue)}
+                    minValue={0}
+                    onIconClick={onPaddingGroupClick}
+                  />
+                  <ControlGroup
+                    name="paddingLeft"
+                    value={element.style.paddingLeft}
+                    image={PaddingLeft}
+                    update={(newValue) => handleStyleChange('paddingLeft', newValue)}
+                    minValue={0}
+                    onIconClick={onPaddingGroupClick}
+                  />
+                  <ControlGroup
+                    name="paddingRight"
+                    value={element.style.paddingRight}
+                    image={PaddingRight}
+                    update={(newValue) => handleStyleChange('paddingRight', newValue)}
+                    minValue={0}
+                    onIconClick={onPaddingGroupClick}
+                  />
+                </div>
+              )
+            }
+          </div>
         )
       }
+
       {
-        !paddingGroup && (
-          <div className='directionGroup'>
-            <ControlGroup
-              name="paddingTop"
-              value={element.style.paddingTop}
-              image={PaddingTop}
-              update={(newValue) => handleStyleChange('paddingTop', newValue)}
-              minValue={0}
-              onIconClick={onPaddingGroupClick}
-            />
-            <ControlGroup
-              name="paddingBottom"
-              value={element.style.paddingBottom}
-              image={PaddingBottom}
-              update={(newValue) => handleStyleChange('paddingBottom', newValue)}
-              minValue={0}
-              onIconClick={onPaddingGroupClick}
-            />
-            <ControlGroup
-              name="paddingLeft"
-              value={element.style.paddingLeft}
-              image={PaddingLeft}
-              update={(newValue) => handleStyleChange('paddingLeft', newValue)}
-              minValue={0}
-              onIconClick={onPaddingGroupClick}
-            />
-            <ControlGroup
-              name="paddingRight"
-              value={element.style.paddingRight}
-              image={PaddingRight}
-              update={(newValue) => handleStyleChange('paddingRight', newValue)}
-              minValue={0}
-              onIconClick={onPaddingGroupClick}
-            />
+        state !== PageState.SHOW_MARGIN && (
+          <div className='section-group'>
+            <div
+              className='section-group-title'
+              onClick={() => setState(PageState.SHOW_MARGIN)}>
+              margin
+            </div>
           </div>
         )
       }
 
-      <div>
-        <ControlGroupDropDown
-          name="alignItems"
-          value={element.style.alignItems}
-          options={alignItems}
-          image={AlignItems}
-          update={(newValue) => handleStyleChange('alignItems', newValue)} 
-          onImageClick={()=>removeStyle(["alignItems"])}
-          />
-      </div>
+      {
+        state === PageState.SHOW_ALIGMENT && (
+          <div className='section-group'>
+            <div className='section-group-title'>
+              alignment
+            </div>
 
-      <div>
-        <ControlGroupDropDown
-          name="justifyContent"
-          value={element.style.justifyContent}
-          options={justifyContent}
-          image={JustifyContent}
-          update={(newValue) => handleStyleChange('justifyContent', newValue)} 
-          onImageClick={()=>removeStyle(["justifyContent"])}
-          />
-      </div>
+            <div>
+              <ControlGroupDropDown
+                name="alignItems"
+                value={element.style.alignItems}
+                options={alignItems}
+                image={AlignItems}
+                update={(newValue) => handleStyleChange('alignItems', newValue)}
+                onImageClick={() => removeStyle(["alignItems"])}
+              />
+            </div>
 
-      <div>
-        <ControlGroupDropDown
-          name="textAlign"
-          value={element.style.textAlign}
-          options={textAlign}
-          image={TextAlign}
-          update={(newValue) => handleStyleChange('textAlign', newValue)} 
-          onImageClick={()=>removeStyle(["textAlign"])}
-          />
-      </div>
+            <div>
+              <ControlGroupDropDown
+                name="justifyContent"
+                value={element.style.justifyContent}
+                options={justifyContent}
+                image={JustifyContent}
+                update={(newValue) => handleStyleChange('justifyContent', newValue)}
+                onImageClick={() => removeStyle(["justifyContent"])}
+              />
+            </div>
 
-      <div>
-        <ControlGroup
-          name="fontSize"
-          value={element.style.fontSize}
-          image={FontSize}
-          update={(newValue) => handleStyleChange('fontSize', newValue)}
-          minValue={10}
-          onImageClick={()=>removeStyle(["fontSize"])}
-        />
-      </div>
+            <div>
+              <ControlGroupDropDown
+                name="textAlign"
+                value={element.style.textAlign}
+                options={textAlign}
+                image={TextAlign}
+                update={(newValue) => handleStyleChange('textAlign', newValue)}
+                onImageClick={() => removeStyle(["textAlign"])}
+              />
+            </div>
+          </div>
+        )
+      }
 
-      <div className='control-group'>
-        <div className='control-icon'>
-          <img src={Background} alt="background" onClick={() => setshowBGColor(!showBGColor)}></img>
-        </div>
-        {
-          showBGColor && (
-            <RgbColorPicker onChange={(e) => hanldeColorChange("backgroundColor", e)} />
-          )
-        }
-      </div>
+      {
+        state !== PageState.SHOW_ALIGMENT && (
+          <div className='section-group'>
+            <div
+              className='section-group-title'
+              onClick={() => setState(PageState.SHOW_ALIGMENT)}>
+              alignment
+            </div>
+          </div>
+        )
+      }
 
-      <div className='control-group'>
-        <div className='control-icon'>
-          <img src={Color} alt="color" onClick={() => setshowColor(!showColor)}></img>
-        </div>
-        {
-          showColor && (
-            <RgbColorPicker onChange={(e) => hanldeColorChange("color", e)} />
-          )
-        }
-      </div>
+      {
+        state === PageState.SHOW_FONT && (
+          <div className='section-group'>
+            <div
+              className='section-group-title'
+            >
+              font
+            </div>
+
+            <div>
+              <ControlGroupDropDown
+                name="fontFamily"
+                value={element.style.fontFamily}
+                options={fontFamily}
+                image={FontSize}
+                update={(newValue) => handleStyleChange('fontFamily', newValue)}
+                onImageClick={() => removeStyle(["fontFamily"])}
+              />
+            </div>
+
+            <div>
+              <ControlGroup
+                name="fontSize"
+                value={element.style.fontSize}
+                image={FontSize}
+                update={(newValue) => handleStyleChange('fontSize', newValue)}
+                minValue={10}
+                onImageClick={() => removeStyle(["fontSize"])}
+              />
+            </div>
+          </div>
+        )
+      }
+
+
+
+      {
+        state !== PageState.SHOW_FONT && (
+          <div className='section-group'>
+            <div
+              className='section-group-title'
+              onClick={() => setState(PageState.SHOW_FONT)}>
+              font
+            </div>
+          </div>
+        )
+      }
+
+
+
+      {
+        state === PageState.SHOW_BORDERS && (
+          <div className='section-group'>
+            <div className='section-group-title'>
+              borders
+            </div>
+            <div>
+              <ControlGroup
+                name="borderWidth"
+                value={element.style.borderWidth}
+                image={BorderWidth}
+                update={(newValue) => handleStyleChange('borderWidth', newValue)}
+                minValue={0}
+                onIconClick={() => removeStyle(["borderWidth"])}
+              />
+            </div>
+
+            <div>
+              <ControlGroupDropDown
+                name="borderStyle"
+                value={element.style.borderStyle}
+                options={borderStyle}
+                image={BorderStyle}
+                update={(newValue) => handleStyleChange('borderStyle', newValue)}
+                onImageClick={() => removeStyle(["borderStyle"])}
+              />
+            </div>
+
+            <div className='control-group'>
+              <div className='control-icon'>
+                <img src={BorderColor} alt="color" onClick={() => removeStyle(["borderColor"])}></img>
+              </div>
+              <RgbColorPicker onChange={(e) => hanldeColorChange("borderColor", e)} />
+            </div>
+
+            <div>
+              <ControlGroup
+                name="borderRadius"
+                value={element.style.borderRadius}
+                image={Border}
+                update={(newValue) => handleStyleChange('borderRadius', newValue)}
+                minValue={0}
+                onIconClick={() => removeStyle(["borderRadius"])}
+              />
+            </div>
+          </div>
+        )
+      }
+
+      {
+        state !== PageState.SHOW_BORDERS && (
+          <div className='section-group'>
+            <div
+              className='section-group-title'
+              onClick={() => setState(PageState.SHOW_BORDERS)}>
+              borders
+            </div>
+          </div>
+
+        )
+      }
+
+      {
+        state === PageState.SHOW_COLORS && (
+          <div className='section-group'>
+            <div
+              className='section-group-title'
+            >
+              colors
+            </div>
+            <div className='control-group'>
+              <div className='control-icon'>
+                <img src={Background} alt="background" onClick={() => setshowBGColor(!showBGColor)}></img>
+              </div>
+              <RgbColorPicker onChange={(e) => hanldeColorChange("backgroundColor", e)} />
+
+            </div>
+
+            <div className='control-group'>
+              <div className='control-icon'>
+                <img src={Color} alt="color" onClick={() => setshowColor(!showColor)}></img>
+              </div>
+              <RgbColorPicker onChange={(e) => hanldeColorChange("color", e)} />
+            </div>
+          </div>
+        )
+      }
+
+      {
+        state !== PageState.SHOW_COLORS && (
+          <div className='section-group'>
+            <div
+              className='section-group-title'
+              onClick={() => setState(PageState.SHOW_COLORS)}>
+              colors
+            </div>
+          </div>
+        )
+      }
+
+
+
     </div>
   )
 }

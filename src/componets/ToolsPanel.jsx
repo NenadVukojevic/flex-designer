@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import EditFlexElement from './EditFlexElement'
+import { elementTypes } from './Constants';
 import Plus from '../Images/plus.png';
 
 const ToolsPanel = ({ addElement, updateElements, selected, elements, removeElement }) => {
   const [element, setElement] = useState({ id: 10, value: "init", style: {} });
+  const [selectedType, setselectedType] = useState("div");
+
 
   useEffect(() => {
     const found = elements.find((element) => element.id === selected);
-    console.log(typeof (found), found);
+    setselectedType("div");
     setElement(found);
 
   }, [elements, selected,]);
@@ -16,21 +19,38 @@ const ToolsPanel = ({ addElement, updateElements, selected, elements, removeElem
     updateElements(id, name, value);
   }
 
+  function handleSelectTypeChnage(ev) {
+    setselectedType(ev.target.value);
+  }
+
   return (
     <div className="tools">
       <div>
         <div>
           selected: {element.id}
         </div>
-        <div >
-          <img className='control-icon'
-            src={Plus}
-            alt="add"
-            onClick={() => addElement()}>
+        {
+          element.type === 'div' && (
+            <div className='control-group'>
+              <img className='control-icon'
+                src={Plus}
+                alt="add"
+                onClick={() => addElement(selectedType)}>
 
-          </img>
-
-        </div>
+              </img>
+              <select
+                value={selectedType}
+                onChange={handleSelectTypeChnage}
+              >
+                {
+                  elementTypes.map((type) => (
+                    <option key={type} value={type}>{type}</option>
+                  ))
+                }
+              </select>
+            </div>
+          )
+        }
       </div>
       <div>
         <EditFlexElement

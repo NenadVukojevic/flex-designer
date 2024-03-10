@@ -54,7 +54,7 @@ const HTMLCode = ({ source }) => {
                 <div className='codeHeaderTitle'>html</div>
                 <div className='codeHeaderButton' onClick={copyContent}>{copied ? 'copied' : 'copy'}</div>
             </div>
-            <div id="html">{code}</div>
+            <pre id="html">{code}</pre>
         </div>
     )
 }
